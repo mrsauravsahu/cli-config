@@ -37,4 +37,7 @@ XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; 
 # this file will be ignored in source control
 . ${CLI_CONFIG_ROOT}/profiles/default/secret.${currentOs}.zshrc 2> /dev/null || true
 
+SAVEHIST=100000  # Save most-recent 100000 lines
+HISTFILE=~/.zsh_history
+
 # zprof
