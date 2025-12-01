@@ -13,6 +13,9 @@ current
 
 *.DS_Store
 
+profiles/default/*
+!profiles/default/.zshrc
+
 profiles/mrsauravsahu/*.gitconfig
 !profiles/mrsauravsahu/template.gitconfig
 !profiles/mrsauravsahu/.gitconfig
@@ -20,4 +23,3 @@ profiles/*/secret*
 
 bash-oo-framework
 
-current*
