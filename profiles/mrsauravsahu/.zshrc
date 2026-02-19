@@ -14,6 +14,9 @@ fi
 
 export PATH="${PATH}:/opt/homebrew/bin"
 
+# add dotfiles script to the path
+export PATH="${PATH}:${HOME}/.mrsauravsahu/dotfiles/scripts"
+
 # case insensitive matching
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
@@ -35,7 +38,8 @@ XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; 
 
 # create a secret.linux.zshrc or secret.darwin.zshrc to run your customizations
 # this file will be ignored in source control
-. ${CLI_CONFIG_ROOT}/profiles/default/secret.${currentOs}.zshrc 2> /dev/null || true
+. ${CLI_CONFIG_ROOT}/profiles/mrsauravsahu/secret-keys.${currentOs}.zshrc  || true
+. ${CLI_CONFIG_ROOT}/profiles/mrsauravsahu/secret.${currentOs}.zshrc 2> /dev/null || true
 
 SAVEHIST=100000  # Save most-recent 100000 lines
 HISTFILE=~/.zsh_history
