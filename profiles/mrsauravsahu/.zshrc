@@ -1,3 +1,4 @@
+# vim: set filetype=sh :
 DISABLE_AUTO_UPDATE="true"
 # DISABLE_MAGIC_FUNCTIONS="true"
 # DISABLE_COMPFIX="true"
@@ -19,6 +20,8 @@ if [ -d "${HOME}/.mrsauravsahu/dotfiles/scripts" ]; then
   export PATH="${PATH}:${HOME}/.mrsauravsahu/dotfiles/scripts"
 fi
 
+GDK_SCALE=2
+
 # case insensitive matching
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
@@ -39,12 +42,11 @@ XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; 
 . $CLI_CONFIG_PROGRAMS_CONF
 
 # create a secret.linux.zshrc or secret.darwin.zshrc to run your customizations
-# this file will be ignored in source control
+. ${CLI_CONFIG_ROOT}/profiles/mrsauravsahu/${currentOs}.zshrc 2> /dev/null || true
 . ${CLI_CONFIG_ROOT}/profiles/mrsauravsahu/secret.${currentOs}.zshrc 2> /dev/null || true
 
 SAVEHIST=100000  # Save most-recent 100000 lines
 HISTFILE=~/.zsh_history
-
 
 alias cat=bat
 alias ll='ls -l'
@@ -482,3 +484,12 @@ SESSION_NAME="${PWD}"
 eval tmux new-session -A -s "$SESSION_NAME" -c "$PWD"
 
 # zprof
+
+# if not in a Tmux session, start one
+# if [[ -z "$TMUX" ]]; then 
+#   exec tmux -u
+# else
+#   TMUX_SESSION_NAME="${PWD}"
+#   tmux new-session -s "${TMUX_SESSION_NAME}" -c "${PWD}" -f "${XDG_CONFIG_HOME}/tmux/tmux.conf"
+# fi
+

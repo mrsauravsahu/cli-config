@@ -23,3 +23,7 @@ profiles/*/secret*
 
 bash-oo-framework
 
+current*
+
+profiles/**/secret.*.zshrc
+
