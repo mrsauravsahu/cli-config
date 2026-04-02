@@ -4,6 +4,18 @@
 [pull]
     ff = only
 
+[includeIf "gitdir:~/GenAI/"]
+    path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
+
+[includeIf "gitdir:~/.config/wezterm/"]
+    path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
+
+[includeIf "gitdir:~/.mrsauravsahu/dotfiles/"]
+    path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
+
+[includeIf "gitdir:~/.config/nvim/"]
+    path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
+
 [includeIf "gitdir:~/.cli-config/"]
     path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
 
