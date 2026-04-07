@@ -1,6 +1,7 @@
 # vim: set filetype=zsh :
 # zmodload zsh/zprof
 
+currentOs=`uname -s | tr 'A-Z' 'a-z'`
 DISABLE_AUTO_UPDATE="true"
 DISABLE_MAGIC_FUNCTIONS="true"
 DISABLE_COMPFIX="true"
@@ -13,16 +14,17 @@ DISABLE_COMPFIX="true"
 #    compinit -C
 #fi
 
-# add to PATH  
+# add to PATH
 PATH_PREFIX=''
 
 GDK_SCALE=2
-PATH_PREFIX="${PATH_PREFIX}:/opt/homebrew/bin"
+export PATH="${PATH}:/opt/homebrew/bin"
 
 # add dotfiles script to the path
 if [ -d "${HOME}/.mrsauravsahu/dotfiles/" ]; then
   PATH_PREFIX="${PATH_PREFIX}:${HOME}/.mrsauravsahu/dotfiles/scripts"
   . ${HOME}/.mrsauravsahu/dotfiles/${currentOs}.zshrc 2> /dev/null || true
+  . ${HOME}/.mrsauravsahu/dotfiles/secret.${currentOs}.zshrc 2> /dev/null || true
 fi
 
 # add friday scripts to the path
@@ -32,8 +34,6 @@ fi
 
 # case insensitive matching
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-
-currentOs=`uname -s | tr 'A-Z' 'a-z'`
 
 CLI_CONFIG_ROOT=$(ls -la ~/.zshrc | sed "s/^.*\->//" | awk -F '/' 'NF{NF-=3}1' 'OFS=/' | xargs)
 CLI_CONFIG_THEME='atomic'
@@ -93,4 +93,5 @@ fi
 export PATH="${PATH_PREFIX}:${PATH}"
 
 # zprof
+
 

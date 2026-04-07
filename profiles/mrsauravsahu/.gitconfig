@@ -19,6 +19,9 @@
 [includeIf "gitdir:~/.cli-config/"]
     path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
 
+[includeIf "gitdir:~/.homelab-pi/"]
+    path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
+
 [includeIf "gitdir:~/Documents/personal/"]
     path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
 
