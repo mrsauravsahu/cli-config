@@ -6,14 +6,6 @@ DISABLE_AUTO_UPDATE="true"
 DISABLE_MAGIC_FUNCTIONS="true"
 DISABLE_COMPFIX="true"
 
-# Smarter completion initialization
-#autoload -Uz compinit
-#if [ "$(date +'%j')" != "$(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null)" ]; then
-#    compinit
-#else
-#    compinit -C
-#fi
-
 # add to PATH
 PATH_PREFIX=''
 
@@ -39,9 +31,6 @@ CLI_CONFIG_ROOT=$(ls -la ~/.zshrc | sed "s/^.*\->//" | awk -F '/' 'NF{NF-=3}1' '
 CLI_CONFIG_THEME='atomic'
 
 XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; else echo ''; fi)
-
-# cleanup old zsh compiled files
-# find ${CLI_CONFIG_ROOT}/current -maxdepth 2 -type f -regex '.*zwc$' | xargs ${XARGS_OPTIONS} rm
 
 # loads cli-config env variables
 . $CLI_CONFIG_ROOT/src/scripts/env.zsh
@@ -82,16 +71,39 @@ function nvim() {
   fi
 }
 
-SESSION_NAME="${PWD//\./_}"
-if [[ "$(tmux has-session -s "${SESSION_NAME}" 2>/dev/null ; echo $?)" -eq 0 ]]; then
-  tmux attach-session -t "${SESSION_NAME}" || true
-else
-  tmux new-session -s "${SESSION_NAME}" -c "${PWD}"
-  tmux attach-session -t "${SESSION_NAME}"
-fi
+auto_tmux() {
+  # Only run in interactive shells
+  [[ $- != *i* ]] && return
+
+  local in_vim=false
+  [[ -n "$NVIM" || -n "$VIM" ]] && in_vim=true
+
+  local level="${TMUX_NESTING_LEVEL:-0}"
+  local session_name="${PWD//[\.\-\/]/_}"
+
+  # Case: not in vim, not in tmux → attach or create outer session
+  if [[ "$in_vim" == false && -z "$TMUX" ]]; then
+    export TMUX_NESTING_LEVEL=1
+    exec tmux new-session -As "${session_name}"
+  fi
+
+  # Case: not in vim, already in tmux → normal pane/split, do nothing
+  if [[ "$in_vim" == false ]]; then
+    return
+  fi
+
+  # Case: in vim terminal, already at max nesting depth → do nothing
+  # Covers: new pane inside vim-nested tmux (level=2, $NVIM still inherited)
+  if (( level <= 1 )); then
+  # Case: in vim terminal (nvterm), not yet at max depth → attach or create nested session
+  # Handles both: vim outside tmux (TMUX unset) and vim inside outer tmux (TMUX set).
+  # The level guard above prevents runaway nesting.
+     TMUX_NESTING_LEVEL="$(( level + 1 ))" tmux -L vim new-session -As "${session_name}" && exit
+  fi
+}
+
+auto_tmux
 
 export PATH="${PATH_PREFIX}:${PATH}"
-
 # zprof
-
 
