@@ -4,6 +4,9 @@
 [pull]
     ff = only
 
+[includeIf "gitdir:~/Downloads/mrsauravsahu/"]
+    path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
+
 [includeIf "gitdir:~/GenAI/"]
     path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
 
