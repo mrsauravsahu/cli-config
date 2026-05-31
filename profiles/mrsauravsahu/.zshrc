@@ -46,17 +46,26 @@ alias ll='ls -l'
 alias l='ls'
 alias h=helm
 alias k=kubectl
+alias colima_start='colima start --mount-type virtiofs --cpu 12 --memory 20 --disk 256 --vm-type vz --vz-rosetta'
+alias http-server='npx files-upload-server /Users/Saurav_Sahu/Desktop/local-http-server/'
+alias colima_start='colima start --mount-type virtiofs --cpu 12 --memory 20 --disk 256 --with-kubernetes --vm-type vz --vz-rosetta'
+alias vim=nvim
 
 PATH_PREFIX="${PATH_PREFIX}:/Users/Saurav_Sahu/.dotnet/tools"
 PATH_PREFIX="${PATH_PREFIX}:/opt/homebrew/opt/ruby@3.2/bin"
 PATH_PREFIX="${PATH_PREFIX}:/opt/homebrew/lib/ruby/gems/3.2.0/bin"
 PATH_PREFIX="${PATH_PREFIX}:${CLI_CONFIG_ROOT}/current/path"
-
-alias colima_start='colima start --mount-type virtiofs --cpu 12 --memory 20 --disk 256 --vm-type vz --vz-rosetta'
-
 PATH_PREFIX="$HOME/.asdf/shims:${PATH_PREFIX}"
-. ~/.asdf/plugins/dotnet/set-dotnet-env.zsh
-. ~/.asdf/plugins/golang/set-env.zsh
+
+
+if [ -d "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
+
+if [ -d "$HOME/.asdf" ]; then
+  . ~/.asdf/plugins/dotnet/set-dotnet-env.zsh
+  . ~/.asdf/plugins/golang/set-env.zsh
+fi
 
 alias vim=nvim
 function nvim() {
