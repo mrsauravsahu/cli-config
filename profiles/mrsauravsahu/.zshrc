@@ -1,16 +1,18 @@
+ANTIGEN_LOG=false
 # vim: set filetype=zsh :
 # zmodload zsh/zprof
 
 currentOs=`uname -s | tr 'A-Z' 'a-z'`
 DISABLE_AUTO_UPDATE="true"
 DISABLE_MAGIC_FUNCTIONS="true"
-DISABLE_COMPFIX="true"
-
-# add to PATH
-PATH_PREFIX=''
+# DISABLE_COMPFIX="true"
 
 GDK_SCALE=2
-export PATH="${PATH}:/opt/homebrew/bin"
+
+# This will hold all changes to PATH
+# Add homebrew
+PATH_PREFIX="/opt/homebrew/bin"
+export PATH="${PATH}:${PATH_PREFIX}"
 
 # add dotfiles script to the path
 if [ -d "${HOME}/.mrsauravsahu/dotfiles/" ]; then
@@ -47,16 +49,12 @@ alias l='ls'
 alias h=helm
 alias k=kubectl
 alias colima_start='colima start --mount-type virtiofs --cpu 12 --memory 20 --disk 256 --vm-type vz --vz-rosetta'
-alias http-server='npx files-upload-server /Users/Saurav_Sahu/Desktop/local-http-server/'
-alias colima_start='colima start --mount-type virtiofs --cpu 12 --memory 20 --disk 256 --with-kubernetes --vm-type vz --vz-rosetta'
-alias vim=nvim
 
 PATH_PREFIX="${PATH_PREFIX}:/Users/Saurav_Sahu/.dotnet/tools"
 PATH_PREFIX="${PATH_PREFIX}:/opt/homebrew/opt/ruby@3.2/bin"
 PATH_PREFIX="${PATH_PREFIX}:/opt/homebrew/lib/ruby/gems/3.2.0/bin"
 PATH_PREFIX="${PATH_PREFIX}:${CLI_CONFIG_ROOT}/current/path"
 PATH_PREFIX="$HOME/.asdf/shims:${PATH_PREFIX}"
-
 
 if [ -d "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
@@ -67,7 +65,6 @@ if [ -d "$HOME/.asdf" ]; then
   . ~/.asdf/plugins/golang/set-env.zsh
 fi
 
-alias vim=nvim
 function nvim() {
   if [[ "$#" -eq 0 ]]; then 
    CLI_CONFIG_ROOT="${CLI_CONFIG_ROOT}" env nvim .
@@ -112,6 +109,22 @@ auto_tmux() {
 }
 
 auto_tmux
+
+# Auto-rename tmux window based on running command
+if [[ -n "$TMUX" ]]; then
+  _tmux_title() {
+    local cmd="${1%% *}"
+    if [[ "$cmd" == "nvim" || "$cmd" == "vim" ]]; then
+      local arg="${1#* }"
+      [[ "$arg" == "$cmd" ]] && arg="$PWD"
+      tmux rename-window "${cmd}:$(basename $arg)"
+    else
+      tmux rename-window "$cmd"
+      fi
+    }
+  preexec() { _tmux_title "$1" }
+  precmd() { tmux rename-window "zsh" }
+fi
 
 export PATH="${PATH_PREFIX}:${PATH}"
 # zprof
