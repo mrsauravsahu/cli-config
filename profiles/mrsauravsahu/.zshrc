@@ -1,6 +1,7 @@
 ANTIGEN_LOG=false
 # vim: set filetype=zsh :
 # zmodload zsh/zprof
+HOMEBREW_NO_AUTO_UPDATE=1
 
 currentOs=`uname -s | tr 'A-Z' 'a-z'`
 DISABLE_AUTO_UPDATE="true"
