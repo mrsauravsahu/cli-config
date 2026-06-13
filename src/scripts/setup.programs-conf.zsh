@@ -7,7 +7,7 @@ echo '# init all cli-config tools' >> $CLI_CONFIG_PROGRAMS_CONF
 echo 'autoload -Uz compinit && compinit' >> $CLI_CONFIG_PROGRAMS_CONF
 echo '. $CLI_CONFIG_CONF_LOCATION/antigen.conf.sh' >> $CLI_CONFIG_PROGRAMS_CONF
  
-for tool in $(find  $CLI_CONFIG_CONF_LOCATION  -type f -name '*.conf\.sh' -not -name '*antigen*' | sort); do
+for tool in $(find  $CLI_CONFIG_CONF_LOCATION  -type f \( -name '*.conf.sh' -o -name '*.conf.zsh' \) -not -name '*antigen*' | sort); do
   echo ". $tool" >> $CLI_CONFIG_PROGRAMS_CONF
 done
 

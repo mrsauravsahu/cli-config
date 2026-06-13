@@ -31,6 +31,7 @@ fi
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 CLI_CONFIG_ROOT=$(ls -la ~/.zshrc | sed "s/^.*\->//" | awk -F '/' 'NF{NF-=3}1' 'OFS=/' | xargs)
+CLI_CONFIG_MODULES=zimfw
 CLI_CONFIG_THEME='atomic'
 
 XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; else echo ''; fi)
@@ -44,6 +45,7 @@ XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; 
 SAVEHIST=100000  # Save most-recent 100000 lines
 HISTFILE=~/.zsh_history
 
+alias cls=clear
 alias cat=bat
 alias ll='ls -l'
 alias l='ls'
@@ -118,7 +120,7 @@ if [[ -n "$TMUX" ]]; then
     if [[ "$cmd" == "nvim" || "$cmd" == "vim" ]]; then
       local arg="${1#* }"
       [[ "$arg" == "$cmd" ]] && arg="$PWD"
-      tmux rename-window "${cmd}:$(basename $arg)"
+      tmux rename-window "nvim:$(basename "$arg")"
     else
       tmux rename-window "$cmd"
       fi

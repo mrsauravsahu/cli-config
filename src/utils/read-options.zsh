@@ -3,7 +3,7 @@ read_options() {
   CCOPT_PROFILE=default
   CCOPT_NO_SUDO='sudo'
   CCOPT_DEBIAN_FRONTEND=''
-  CCOPT_TOOLS=('antigen' 'ohmyposh' 'nvm' 'pyenv' 'dotnet' 'tfenv' 'gvm')
+  CCOPT_TOOLS=('antigen' 'zimfw' 'ohmyposh' 'nvm' 'pyenv' 'dotnet' 'tfenv' 'gvm')
 
   # READ OPTIONS
   # Todo: Move to separate file
