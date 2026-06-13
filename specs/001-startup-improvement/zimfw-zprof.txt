@@ -1,0 +1,38 @@
+# zprof after zimfw migration — 2026-06-13
+# Command: time zsh -i -c exit
+# Total: 0.36s user 0.43s system 72% cpu 1.097 total
+# Baseline was: 0.41s user 0.56s system 10% cpu 9.727 total
+# Wall time improvement: ~9x faster (9.7s → 1.1s)
+
+num  calls                time                       self            name
+-----------------------------------------------------------------------------------
+ 1)    1         376.72   376.72   77.16%    237.62   237.62   48.67%  compinit
+ 2)    7          96.94    13.85   19.86%     80.82    11.55   16.55%  antigen
+ 3)  816          63.37     0.08   12.98%     63.37     0.08   12.98%  compdef
+ 4)    1          55.35    55.35   11.34%     55.35    55.35   11.34%  compdump
+ 5)    2          20.40    10.20    4.18%     20.40    10.20    4.18%  compaudit
+ 6)    2          16.59     8.30    3.40%     16.59     8.30    3.40%  _zsh_direnv_load
+ 7)    2          10.19     5.09    2.09%     10.11     5.05    2.07%  _zsh_highlight_load_highlighters
+ 8)    2           1.36     0.68    0.28%      1.31     0.66    0.27%  _zsh_highlight__function_callable_p
+ 9)   12           0.98     0.08    0.20%      0.98     0.08    0.20%  add-zsh-hook
+10)    5           0.85     0.17    0.17%      0.83     0.17    0.17%  add-zle-hook-widget
+11)   13           0.64     0.05    0.13%      0.64     0.05    0.13%  is-at-least
+12)    1           0.08     0.08    0.02%      0.08     0.08    0.02%  (anon) [/Users/Saurav_Sahu/.cli-config/current/antigen/bundles/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh:458]
+13)    1           0.03     0.03    0.01%      0.03     0.03    0.01%  lazyload
+14)    2           0.03     0.01    0.01%      0.03     0.01    0.01%  _zsh_highlight__is_function_p
+15)    1           0.02     0.02    0.00%      0.02     0.02    0.00%  (anon) [/usr/share/zsh/5.9/functions/add-zle-hook-widget:28]
+16)    1           0.02     0.02    0.00%      0.02     0.02    0.00%  _zsh_highlight__function_is_autoload_stub_p
+17)    1           0.02     0.02    0.00%      0.02     0.02    0.00%  _omp_cleanup
+18)    1           0.02     0.02    0.00%      0.02     0.02    0.00%  auto_tmux
+19)    2           0.00     0.00    0.00%      0.00     0.00    0.00%  _zsh_highlight_bind_widgets
+
+-----------------------------------------------------------------------------------
+# Remaining top costs:
+#   compinit (self 237ms, 48.7%) — runs unconditionally, cache fix still pending
+#   antigen  (self  80ms, 16.6%) — antigen still in memory? likely stale .zwc or zsh-autosuggestions loaded via antigen path
+#   compdef  (      63ms, 13.0%) — driven by compinit
+#   compdump (      55ms, 11.3%) — driven by compinit
+#
+# Note: 'antigen' appearing in zprof suggests zsh-autosuggestions bundle path is still
+# being sourced from current/antigen/bundles/. zimfw may not have replaced it yet,
+# or CLI_CONFIG_MODULES guard on antigen.conf.sh needs regenerating via cli-config configure.
