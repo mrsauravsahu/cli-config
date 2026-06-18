@@ -13,7 +13,7 @@
 [includeIf "gitdir:~/.config/wezterm/"]
     path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
 
-[includeIf "gitdir:~/.mrsauravsahu/dotfiles/"]
+[includeIf "gitdir:~/.mrsauravsahu/"]
     path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
 
 [includeIf "gitdir:~/.config/nvim/"]

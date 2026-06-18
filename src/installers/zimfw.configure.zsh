@@ -6,6 +6,7 @@ ZIMFW_HOME=$CLI_CONFIG_ROOT/current/zimfw
 # Write .zimrc (module list used by zimfw install/update)
 tee $ZIMRC >/dev/null <<'EOF'
 zmodule qoomon/zsh-lazyload
+zmodule zsh-users/zsh-autosuggestions
 zmodule ptavares/zsh-direnv
 zmodule ohmyzsh/ohmyzsh --root plugins/autojump
 zmodule zsh-users/zsh-syntax-highlighting
@@ -19,7 +20,7 @@ ZIM_HOME=$ZIMFW_HOME ZIM_CONFIG_FILE=$ZIMRC zsh $CLI_CONFIG_TOOLS_LOCATION/zimfw
 # Write conf — shell startup just sources the pre-built init.zsh
 echo -n >$CONF
 tee $CONF >/dev/null <<EOF
-[[ "\${CLI_CONFIG_MODULES:-antigen}" != "zimfw" ]] && return
+[[ "\${CLI_CONFIG_MODULES:-zimfw}" != "zimfw" ]] && return
 
 export ZIMFW_HOME=\${CLI_CONFIG_ROOT}/current/zimfw
 export ZIM_HOME=\$ZIMFW_HOME
