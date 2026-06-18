@@ -27,3 +27,5 @@ current*
 
 profiles/**/secret.*.zshrc
 
+tmp
+

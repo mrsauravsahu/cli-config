@@ -22,15 +22,13 @@ usage() {
     fi
   done
 
-  printf "CLI-CONFIG\n"
-
   modes_str=$(array_str ", " "${modes[@]}")
   profiles_str=$(array_str "/" "${profiles[@]}")
   active_tools_str=$(array_str "," "${active_tools[@]}")
   deprecated_tools_str=$(array_str "," "${deprecated_tools_found[@]}")
   plugin_managers_str=$(array_str "/" "${PLUGIN_MANAGERS[@]}")
 
-  echo "./setup.sh <mode> [-p|--profile=profileName] [-t|--tools=tool1,tool2]"
+  echo "cli-config <mode> [-p|--profile=profileName] [-t|--tools=tool1,tool2]"
   printf "\n"
   echo "mode: ${modes_str} "
   echo "profile: ${profiles_str} "
