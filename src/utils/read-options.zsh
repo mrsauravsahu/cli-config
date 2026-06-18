@@ -1,9 +1,11 @@
 read_options() {
+  . $CLI_CONFIG_ROOT/src/utils/tool-guards.zsh
+
   # DEFAULT OPTIONS
   CCOPT_PROFILE=default
   CCOPT_NO_SUDO='sudo'
   CCOPT_DEBIAN_FRONTEND=''
-  CCOPT_TOOLS=('zimfw' 'ohmyposh' 'nvm' 'pyenv' 'dotnet' 'tfenv' 'gvm')
+  CCOPT_TOOLS=('zimfw' 'ohmyposh' 'asdf' 'dotnet')
 
   # READ OPTIONS
   # Todo: Move to separate file
@@ -51,6 +53,8 @@ read_options() {
         Log "\"-t|--tools\" Found invalid tools, skipping installation - '$(array_str ',' ${invalidPrograms[@]})'"
         exit
       fi
+
+      validate_tools "${CCOPT_TOOLS[@]}"
       shift
       shift
       ;;
