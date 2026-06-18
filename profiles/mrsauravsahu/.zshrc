@@ -115,18 +115,32 @@ auto_tmux() {
 auto_tmux
 
 # Auto-rename tmux window based on running command
+# only set up hooks when inside a tmux session
 if [[ -n "$TMUX" ]]; then
   _tmux_title() {
+    # extract just the command name, strip arguments
     local cmd="${1%% *}"
+    # give editors a richer title showing the file/dir
     if [[ "$cmd" == "nvim" || "$cmd" == "vim" ]]; then
-      local arg="${1#* }"
-      [[ "$arg" == "$cmd" ]] && arg="$PWD"
-      tmux rename-window "nvim:$(basename "$arg")"
+      # strip command name and leading space to isolate the first argument
+      local arg="${1#"$cmd"}"
+      arg="${arg# }"
+      # use cwd when: no arg given, or arg is a shorthand for the current/home dir
+      if [[ -z "$arg" || "$arg" == "." || "$arg" == "./" || "$arg" == "~" || "$arg" == "~/" ]]; then
+        arg="$(basename "$PWD")"
+      else
+        arg="$(basename "$arg")"
+      fi
+      # set window title to "nvim:<filename>"
+      tmux rename-window "nvim:${arg}"
     else
+      # for all other commands, use the command name
       tmux rename-window "$cmd"
       fi
     }
+  # rename window as each command starts
   preexec() { _tmux_title "$1" }
+  # reset window title back to "zsh" after command finishes
   precmd() { tmux rename-window "zsh" }
 fi
 
