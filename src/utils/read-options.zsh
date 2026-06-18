@@ -44,6 +44,7 @@ read_options() {
       fi
 
       CCOPT_TOOLS=($(echo $2 | sed 's/,/\n/g'))
+      CCOPT_TOOLS_EXPLICIT=true
       invalidPrograms=()
       for program in "${CCOPT_TOOLS[@]}"; do
         (! test -f $CLI_CONFIG_ROOT/src/installers/${program}.install.zsh) && invalidPrograms+=($program)

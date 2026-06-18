@@ -4,7 +4,7 @@
 . ${CLI_CONFIG_ROOT}/src/utils/tool-guards.zsh
 
 usage() {
-  modes=('install' 'configure')
+  modes=('install' 'configure' 'uninstall')
   profiles=($(ls -1 "${CLI_CONFIG_ROOT}/profiles"))
   all_tools=$(ls -1 $CLI_CONFIG_ROOT/src/installers | sed 's/\..*$//g' | sort | uniq)
   active_tools=()
@@ -31,7 +31,7 @@ usage() {
   plugin_managers_str=$(array_str "/" "${PLUGIN_MANAGERS[@]}")
 
   echo "./setup.sh <mode> [-p|--profile=profileName] [-t|--tools=tool1,tool2]"
-  printf "\n\n"
+  printf "\n"
   echo "mode: ${modes_str} "
   echo "profile: ${profiles_str} "
   printf "tools: ${active_tools_str}\n"
