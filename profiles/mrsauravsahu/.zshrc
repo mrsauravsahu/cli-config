@@ -58,7 +58,7 @@ PATH_PREFIX="${PATH_PREFIX}:/Users/Saurav_Sahu/.dotnet/tools"
 PATH_PREFIX="${PATH_PREFIX}:/opt/homebrew/opt/ruby@3.2/bin"
 PATH_PREFIX="${PATH_PREFIX}:/opt/homebrew/lib/ruby/gems/3.2.0/bin"
 PATH_PREFIX="${PATH_PREFIX}:${CLI_CONFIG_ROOT}/current/path"
-PATH_PREFIX="$HOME/.asdf/shims:${PATH_PREFIX}"
+PATH_PREFIX="${CLI_CONFIG_ROOT}/current/asdf/shims:${PATH_PREFIX}"
 
 if [ -d "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
