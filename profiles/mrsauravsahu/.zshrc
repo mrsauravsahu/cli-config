@@ -33,8 +33,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
 CLI_CONFIG_ROOT=$(ls -la ~/.zshrc | sed "s/^.*\->//" | awk -F '/' 'NF{NF-=3}1' 'OFS=/' | xargs)
 CLI_CONFIG_MODULES=zimfw
-CLI_CONFIG_THEME='atomic'
-
+CLI_CONFIG_THEME=takuya
 XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; else echo ''; fi)
 
 # loads cli-config env variables
