@@ -107,7 +107,7 @@ auto_tmux() {
   # Case: in vim terminal (nvterm), not yet at max depth → attach or create nested session
   # Handles both: vim outside tmux (TMUX unset) and vim inside outer tmux (TMUX set).
   # The level guard above prevents runaway nesting.
-     TMUX_NESTING_LEVEL="$(( level + 1 ))" tmux -L vim new-session -As "${session_name}" && exit
+     TMUX="" TMUX_NESTING_LEVEL="$(( level + 1 ))" tmux new-session -As "${session_name}" && exit
   fi
 }
 
