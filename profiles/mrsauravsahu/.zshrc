@@ -13,6 +13,7 @@ GDK_SCALE=2
 # This will hold all changes to PATH
 # Add homebrew
 PATH_PREFIX="/opt/homebrew/bin"
+PATH_PREFIX="/home/linuxbrew/.linuxbrew/bin/"
 export PATH="${PATH}:${PATH_PREFIX}"
 
 # add dotfiles script to the path
@@ -93,7 +94,7 @@ auto_tmux() {
   # Case: not in vim, not in tmux → attach or create outer session
   if [[ "$in_vim" == false && -z "$TMUX" ]]; then
     export TMUX_NESTING_LEVEL=1
-    exec tmux new-session -As "${session_name}"
+    exec tmux new-session -u -As "${session_name}"
   fi
 
   # Case: not in vim, already in tmux → normal pane/split, do nothing
@@ -107,7 +108,7 @@ auto_tmux() {
   # Case: in vim terminal (nvterm), not yet at max depth → attach or create nested session
   # Handles both: vim outside tmux (TMUX unset) and vim inside outer tmux (TMUX set).
   # The level guard above prevents runaway nesting.
-     TMUX_NESTING_LEVEL="$(( level + 1 ))" tmux -L vim new-session -As "${session_name}" && exit
+     TMUX_NESTING_LEVEL="$(( level + 1 ))" tmux -u -L vim new-session -As "${session_name}" && exit
   fi
 }
 
