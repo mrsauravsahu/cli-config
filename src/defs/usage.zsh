@@ -10,7 +10,7 @@ usage() {
   active_tools=()
   deprecated_tools_found=()
 
-  for tool in ${(f)all_tools}; do
+  while IFS= read -r tool; do
     local is_deprecated=false
     for d in "${DEPRECATED_TOOLS[@]}"; do
       [[ "$tool" == "$d" ]] && is_deprecated=true && break
@@ -20,7 +20,7 @@ usage() {
     else
       active_tools+=("$tool")
     fi
-  done
+  done <<<"$all_tools"
 
   modes_str=$(array_str ", " "${modes[@]}")
   profiles_str=$(array_str "/" "${profiles[@]}")
