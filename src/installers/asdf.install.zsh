@@ -27,17 +27,14 @@ else
   TARBALL="asdf-${APP_VERSION}-${OS}-${ARCH}.tar.gz"
   URL="https://github.com/asdf-vm/asdf/releases/download/${APP_VERSION}/${TARBALL}"
 
-  TMP_DIR=$(mktemp -d)
-  TMP_TARBALL="${TMP_DIR}/${TARBALL}"
+  mkdir -p "$INSTALL_DIR/bin"
 
   Log "Downloading ${URL}"
-  curl -fsSL -o "$TMP_TARBALL" "$URL"
+  wget -q -O "$INSTALL_DIR/${TARBALL}" "$URL"
 
-  mkdir -p "$INSTALL_DIR/bin"
-  tar -xzf "$TMP_TARBALL" -C "$TMP_DIR"
-  mv "$TMP_DIR/asdf" "$BIN_PATH"
+  tar -xzf "$INSTALL_DIR/${TARBALL}" -C "$INSTALL_DIR/bin"
   chmod +x "$BIN_PATH"
 
-  rm -rf "$TMP_DIR"
+  rm "$INSTALL_DIR/${TARBALL}"
   Log "asdf ${APP_VERSION} installed to ${BIN_PATH}"
 fi
