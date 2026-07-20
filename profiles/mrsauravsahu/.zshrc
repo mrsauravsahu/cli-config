@@ -131,8 +131,8 @@ if [[ -n "$TMUX" ]]; then
       else
         arg="$(basename "$arg")"
       fi
-      # set window title to "nvim:<filename>"
-      tmux rename-window "nvim:${arg}"
+      # set window title to "nvim//<filename>" (tmux 3.7+ rejects ':' and '.' in window names)
+      tmux rename-window "nvim//${arg}"
     else
       # for all other commands, use the command name
       tmux rename-window "$cmd"
