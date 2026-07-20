@@ -10,19 +10,17 @@ DISABLE_MAGIC_FUNCTIONS="true"
 
 GDK_SCALE=2
 
+CLI_CONFIG_ROOT=${${$(readlink ~/.zshrc):A}:h:h:h}
+CLI_CONFIG_MODULES=zimfw
+CLI_CONFIG_THEME=takuya
+XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; else echo ''; fi)
+
 # This will hold all changes to PATH
 # Add homebrew
 PATH_PREFIX="/opt/homebrew/bin"
-PATH_PREFIX="/home/linuxbrew/.linuxbrew/bin/"
-export PATH="${PATH}:${PATH_PREFIX}"
+PATH_PREFIX="${PATH_PREFIX}:/home/linuxbrew/.linuxbrew/bin/"
 
-# add dotfiles script to the path
-if [ -d "${HOME}/.mrsauravsahu/dotfiles/" ]; then
-  PATH_PREFIX="${PATH_PREFIX}:${HOME}/.mrsauravsahu/dotfiles/scripts"
-  PATH_PREFIX="${PATH_PREFIX}:${HOME}/.mrsauravsahu/bin"
-  . ${HOME}/.mrsauravsahu/dotfiles/${currentOs}.zshrc 2> /dev/null || true
-  . ${HOME}/.mrsauravsahu/dotfiles/secret.${currentOs}.zshrc 2> /dev/null || true
-fi
+export PATH="${PATH}:${PATH_PREFIX}"
 
 # add friday scripts to the path
 if [ -d "${HOME}/GenAI/code/friday/scripts" ]; then
@@ -32,16 +30,19 @@ fi
 # case insensitive matching
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 
-CLI_CONFIG_ROOT=$(ls -la ~/.zshrc | sed "s/^.*\->//" | awk -F '/' 'NF{NF-=3}1' 'OFS=/' | xargs)
-CLI_CONFIG_MODULES=zimfw
-CLI_CONFIG_THEME=takuya
-XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; else echo ''; fi)
-
 # loads cli-config env variables
 . $CLI_CONFIG_ROOT/src/scripts/env.zsh
 
 # runs the configuration for all installed programs
 . $CLI_CONFIG_PROGRAMS_CONF
+
+# add dotfiles script to the path
+if [ -d "${HOME}/.mrsauravsahu/dotfiles/" ]; then
+  PATH_PREFIX="${PATH_PREFIX}:${HOME}/.mrsauravsahu/dotfiles/scripts"
+  PATH_PREFIX="${PATH_PREFIX}:${HOME}/.mrsauravsahu/bin"
+  . ${HOME}/.mrsauravsahu/dotfiles/${currentOs}.zshrc 2> /dev/null || true
+  . ${HOME}/.mrsauravsahu/dotfiles/secret.${currentOs}.zshrc 2> /dev/null || true
+fi
 
 SAVEHIST=100000  # Save most-recent 100000 lines
 HISTFILE=~/.zsh_history
@@ -60,13 +61,14 @@ PATH_PREFIX="${PATH_PREFIX}:/opt/homebrew/lib/ruby/gems/3.2.0/bin"
 PATH_PREFIX="${PATH_PREFIX}:${CLI_CONFIG_ROOT}/current/path"
 PATH_PREFIX="${CLI_CONFIG_ROOT}/current/asdf/shims:${PATH_PREFIX}"
 
-if [ -d "$HOME/.cargo/env" ]; then
-  . "$HOME/.cargo/env"
-fi
+# if [ -d "$HOME/.cargo/env" ]; then
+#   . "$HOME/.cargo/env"
+# fi
 
-if [ -d "$HOME/.asdf" ]; then
-  . ~/.asdf/plugins/dotnet/set-dotnet-env.zsh
-  . ~/.asdf/plugins/golang/set-env.zsh
+if [ -d "${CLI_CONFIG_ROOT}/current/asdf" ]; then
+  PATH_PREFIX="${HOME}/${CLI_CONFIG_ROOT}/current/asdf/shims/bin:${PATH_PREFIX}"
+  . ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/golang/set-env.zsh
+  . ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/dotnet/set-dotnet-env.zsh
 fi
 
 function nvim() {
@@ -94,7 +96,7 @@ auto_tmux() {
   # Case: not in vim, not in tmux → attach or create outer session
   if [[ "$in_vim" == false && -z "$TMUX" ]]; then
     export TMUX_NESTING_LEVEL=1
-    exec tmux new-session -u -As "${session_name}"
+    exec tmux new-session -As "${session_name}"
   fi
 
   # Case: not in vim, already in tmux → normal pane/split, do nothing
@@ -108,7 +110,7 @@ auto_tmux() {
   # Case: in vim terminal (nvterm), not yet at max depth → attach or create nested session
   # Handles both: vim outside tmux (TMUX unset) and vim inside outer tmux (TMUX set).
   # The level guard above prevents runaway nesting.
-     TMUX_NESTING_LEVEL="$(( level + 1 ))" tmux -u -L vim new-session -As "${session_name}" && exit
+     TMUX_NESTING_LEVEL="$(( level + 1 ))" tmux -L vim new-session -As "${session_name}" && exit
   fi
 }
 

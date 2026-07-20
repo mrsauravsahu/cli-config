@@ -1,5 +1,5 @@
 [init]
-    defaultBranch = cool
+    defaultBranch = main
 
 [pull]
     ff = only
@@ -8,6 +8,9 @@
     path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
 
 [includeIf "gitdir:~/GenAI/"]
+    path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
+
+[includeIf "gitdir:~/GenAI-Workspace/"]
     path = ~/.cli-config/profiles/mrsauravsahu/personal.gitconfig
 
 [includeIf "gitdir:~/.config/wezterm/"]
@@ -30,3 +33,6 @@
 
 [includeIf "gitdir:~/Documents/work/"]
     path = ~/.cli-config/profiles/mrsauravsahu/work.gitconfig
+
+[push]
+	autoSetupRemote = true
