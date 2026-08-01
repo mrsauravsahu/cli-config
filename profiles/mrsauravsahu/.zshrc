@@ -27,6 +27,14 @@ if [ -d "${HOME}/GenAI/code/friday/scripts" ]; then
   PATH_PREFIX="${PATH_PREFIX}:${HOME}/GenAI/code/friday/scripts"
 fi
 
+# add GenAI-Workspace scripts (gw, gw-pick) to the path
+if [ -d "${HOME}/GenAI-Workspace" ]; then
+  PATH_PREFIX="${PATH_PREFIX}:${HOME}/GenAI-Workspace/scripts"
+  # gw / gw-pick are scripts in ~/GenAI-Workspace/scripts (on PATH) so the tmux
+  # `+g popup (a non-interactive shell) can call them too. Usage: gw [dir] [ai].
+  compdef _directories gw 2>/dev/null
+fi
+
 # case insensitive matching
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 

@@ -29,3 +29,6 @@ profiles/**/secret.*.zshrc
 
 tmp
 
+*.envrc
+!template.envrc
+
