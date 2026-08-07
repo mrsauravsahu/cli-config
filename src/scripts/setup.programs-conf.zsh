@@ -7,11 +7,17 @@ echo '# init all cli-config tools' >> $CLI_CONFIG_PROGRAMS_CONF
 {
   echo 'autoload -Uz compinit'
   echo 'setopt extendedglob'
-  echo 'if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then'
+  echo '_cli_config_zcompdump=${ZDOTDIR:-$HOME}/.zcompdump'
+  echo 'if [[ -n ${_cli_config_zcompdump}(#qN.mh+24) ]]; then'
   echo '  compinit'
+  echo '  # compinit only rewrites the dump when completions actually changed, so its'
+  echo '  # mtime can stay stale forever - touch it so the 24h check resets and the'
+  echo '  # next start takes the fast -C path.'
+  echo '  touch ${_cli_config_zcompdump}'
   echo 'else'
   echo '  compinit -C'
   echo 'fi'
+  echo 'unset _cli_config_zcompdump'
   echo 'unsetopt extendedglob'
 } >> $CLI_CONFIG_PROGRAMS_CONF
 
@@ -24,4 +30,13 @@ for tool in $(find $CLI_CONFIG_CONF_LOCATION -type f \( -name '*.conf.sh' -o -na
   echo ". $tool" >>$CLI_CONFIG_PROGRAMS_CONF
 done
 
-echo eval "\$(thefuck --alias)" >>$CLI_CONFIG_PROGRAMS_CONF
+# `thefuck --alias` costs ~370ms per shell start (python interpreter startup), which
+# was roughly half of total startup time. Define a stub that pays that cost only on
+# the first `fuck` invocation, then replaces itself with the real alias function.
+{
+  echo 'fuck() {'
+  echo '  unset -f fuck'
+  echo '  eval "$(thefuck --alias)"'
+  echo '  fuck "$@"'
+  echo '}'
+} >>$CLI_CONFIG_PROGRAMS_CONF

@@ -20,7 +20,10 @@ XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; 
 PATH_PREFIX="/opt/homebrew/bin"
 PATH_PREFIX="${PATH_PREFIX}:/home/linuxbrew/.linuxbrew/bin/"
 
-export PATH="${PATH}:${PATH_PREFIX}"
+# Keep PATH/path free of duplicates. PATH_PREFIX is prepended again at the end of
+# this file, so exporting it here too is what put homebrew (and everything else)
+# on PATH twice.
+typeset -U path PATH
 
 # add friday scripts to the path
 if [ -d "${HOME}/GenAI/code/friday/scripts" ]; then
@@ -61,11 +64,9 @@ alias ll='ls -l'
 alias l='ls'
 alias h=helm
 alias k=kubectl
-alias colima_start='colima start --mount-type virtiofs --cpu 12 --memory 20 --disk 256 --vm-type vz --vz-rosetta'
 
-PATH_PREFIX="${PATH_PREFIX}:/Users/Saurav_Sahu/.dotnet/tools"
-PATH_PREFIX="${PATH_PREFIX}:/opt/homebrew/opt/ruby@3.2/bin"
-PATH_PREFIX="${PATH_PREFIX}:/opt/homebrew/lib/ruby/gems/3.2.0/bin"
+# macOS-only entries (colima, homebrew ruby@3.2, ~/.dotnet/tools) live in
+# ~/.mrsauravsahu/dotfiles/darwin.zshrc - this file is the cross-platform base.
 PATH_PREFIX="${PATH_PREFIX}:${CLI_CONFIG_ROOT}/current/path"
 PATH_PREFIX="${CLI_CONFIG_ROOT}/current/asdf/shims:${PATH_PREFIX}"
 
@@ -74,7 +75,9 @@ PATH_PREFIX="${CLI_CONFIG_ROOT}/current/asdf/shims:${PATH_PREFIX}"
 # fi
 
 if [ -d "${CLI_CONFIG_ROOT}/current/asdf" ]; then
-  PATH_PREFIX="${HOME}/${CLI_CONFIG_ROOT}/current/asdf/shims/bin:${PATH_PREFIX}"
+  # (dropped a "${HOME}/${CLI_CONFIG_ROOT}/..." entry here - CLI_CONFIG_ROOT is
+  # already absolute, so it expanded to /Users/<user>//Users/<user>/... and never
+  # existed. The correct shims dir is already prepended above.)
   . ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/golang/set-env.zsh
   . ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/dotnet/set-dotnet-env.zsh
 fi
