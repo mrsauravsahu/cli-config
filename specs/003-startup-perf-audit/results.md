@@ -86,7 +86,25 @@ fresh per-shell value using fork-free zsh builtins (`$$` + `$RANDOM`).
 - **Global `/etc/zshrc` + `/etc/zprofile` (90ms)** — system files, mostly
   `path_helper`. Not ours to edit.
 - **`~/.mrsauravsahu/dotfiles/darwin.zshrc`** lives in a separate repo
-  (`mrsauravsahu/dotfiles`) and was left untouched. It still duplicates ~13 things
-  from `.zshrc` (aliases `cat`/`ll`/`l`/`h`/`k`, the `nvim` function, ruby/dotnet
-  PATH entries, both asdf `set-env` sources, `colima_start`) and adds a second,
-  non-existent `~/.asdf/shims`. Deduping it is the next win — see below.
+  (`mrsauravsahu/dotfiles`). It still duplicates 11 things from `.zshrc`
+  (aliases `cat`/`ll`/`l`/`h`/`k`, the `nvim` function, ruby/dotnet PATH entries,
+  both asdf `set-env` sources) and adds a second, non-existent `~/.asdf/shims`.
+  Deduping it was deliberately deferred.
+
+---
+
+## ⚠️ Requires a paired dotfiles PR
+
+`darwin.zshrc` is sourced from the **middle** of `.zshrc`, so for anything defined
+in both files, whichever defines it *later* silently wins. Both files defined
+`colima_start` with **different flags**, and `.zshrc` defined it after the source —
+so the `.zshrc` version won and the effective alias never had `--with-kubernetes`.
+
+Removing that duplicate here would have silently flipped Kubernetes **on**. To keep
+behavior identical, a paired change drops the flag in `darwin.zshrc`:
+
+- branch: `colima-no-kubernetes` in `mrsauravsahu/dotfiles` (commit `68d77dc`)
+- PR: https://github.com/mrsauravsahu/dotfiles/pull/new/colima-no-kubernetes
+
+**Merge the dotfiles PR together with this one.** Verified: with both applied, the
+effective `colima_start` is byte-identical to today's.
