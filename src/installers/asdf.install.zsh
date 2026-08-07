@@ -11,17 +11,23 @@ else
 
   # Detect OS
   case "$(uname -s)" in
-    Linux)  OS=linux ;;
-    Darwin) OS=darwin ;;
-    *) Log "Unsupported OS: $(uname -s)"; exit 1 ;;
+  Linux) OS=linux ;;
+  Darwin) OS=darwin ;;
+  *)
+    Log "Unsupported OS: $(uname -s)"
+    exit 1
+    ;;
   esac
 
   # Detect arch
   case "$(uname -m)" in
-    x86_64)          ARCH=amd64 ;;
-    aarch64|arm64)   ARCH=arm64 ;;
-    i386|i686)       ARCH=386 ;;
-    *) Log "Unsupported arch: $(uname -m)"; exit 1 ;;
+  x86_64) ARCH=amd64 ;;
+  aarch64 | arm64) ARCH=arm64 ;;
+  i386 | i686) ARCH=386 ;;
+  *)
+    Log "Unsupported arch: $(uname -m)"
+    exit 1
+    ;;
   esac
 
   TARBALL="asdf-${APP_VERSION}-${OS}-${ARCH}.tar.gz"
