@@ -8,8 +8,6 @@ DISABLE_AUTO_UPDATE="true"
 DISABLE_MAGIC_FUNCTIONS="true"
 # DISABLE_COMPFIX="true"
 
-GDK_SCALE=2
-
 CLI_CONFIG_ROOT=${${$(readlink ~/.zshrc):A}:h:h:h}
 CLI_CONFIG_MODULES=zimfw
 CLI_CONFIG_THEME=takuya
@@ -18,7 +16,6 @@ XARGS_OPTIONS=$(if [ "${currentOs}" = "linux" ]; then echo '--no-run-if-empty'; 
 # This will hold all changes to PATH
 # Add homebrew
 PATH_PREFIX="/opt/homebrew/bin"
-PATH_PREFIX="${PATH_PREFIX}:/home/linuxbrew/.linuxbrew/bin/"
 
 # Keep PATH/path free of duplicates. PATH_PREFIX is prepended again at the end of
 # this file, so exporting it here too is what put homebrew (and everything else)
