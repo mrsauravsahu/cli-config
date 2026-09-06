@@ -5,7 +5,7 @@ read_options() {
   CCOPT_PROFILE=default
   CCOPT_NO_SUDO='sudo'
   CCOPT_DEBIAN_FRONTEND=''
-  CCOPT_TOOLS=('zimfw' 'ohmyposh' 'asdf' 'dotnet')
+  CCOPT_TOOLS=('zimfw' 'ohmyposh' 'asdf')
 
   # READ OPTIONS
   # Todo: Move to separate file
