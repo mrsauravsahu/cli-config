@@ -73,7 +73,6 @@ Once the setup is done, your `~/.zshrc` will be symlinked to the [default profil
 ### Basics
 - [ohmyzsh](https://github.com/ohmyzsh/ohmyzsh) for zsh plugins
 - [oh-my-posh](https://github.com/JanDeDobbeleer/oh-my-posh) for prompt customization and theming
-- [antigen](https://github.com/zsh-users/antigen) for more plugins 😉
 
 ### Programming Support
 - [asdf](https://github.com/asdf-vm/asdf) single version manager for every runtime (node, python, go, dotnet, terraform, ...) via plugins
@@ -94,7 +93,7 @@ Once the setup is done, your `~/.zshrc` will be symlinked to the [default profil
 - Runtime versions are managed solely by [asdf](https://github.com/asdf-vm/asdf) - the nvm, pyenv, gvm, tfenv and dotnet installers have been removed.
 - Theming & Prompt customization support with [oh-my-posh](https://github.com/JanDeDobbeleer/oh-my-posh).
 - Fresh new installation experience, powered by [Bash oo Framework](https://github.com/niieani/bash-oo-framework).
-- Switch antigen themes with a single env variable `CLI_CONFIG_THEME`
+- Switch oh-my-posh themes with a single env variable `CLI_CONFIG_THEME`
 - Extra tools available for Linux as well! Check out the [package list](extras/apt-list.txt).
 - New extras package - [tmux](https://github.com/tmux/tmux/wiki)
 - Setup apps and cool goodies on macOS with brew. Checkout the [extras](extras/setup.sh) script.
