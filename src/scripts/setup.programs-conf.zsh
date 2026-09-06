@@ -6,19 +6,26 @@ echo >>$CLI_CONFIG_PROGRAMS_CONF
 echo '# init all cli-config tools' >>$CLI_CONFIG_PROGRAMS_CONF
 {
   echo 'autoload -Uz compinit'
-  echo 'setopt extendedglob'
+  echo '# Glob qualifiers need EXTENDED_GLOB. Remember the prior state and restore it,'
+  echo '# rather than unconditionally clearing an option the user may rely on.'
+  echo '_cli_config_eg=0; [[ -o extendedglob ]] || { _cli_config_eg=1; setopt extendedglob }'
   echo '_cli_config_zcompdump=${ZDOTDIR:-$HOME}/.zcompdump'
-  echo 'if [[ -n ${_cli_config_zcompdump}(#qN.mh+24) ]]; then'
-  echo '  compinit'
+  echo '# The previous [[ -n path(#qN.mh+24) ]] form took the -C branch when the dump was'
+  echo '# MISSING as well as when it was fresh, so a first run (or a deleted dump) loaded'
+  echo '# no completions at all. Match through an array instead: (#qN.mh-24) yields the'
+  echo '# dump only if it exists, is a plain file, and is less than 24h old.'
+  echo '_cli_config_zcompdump_fresh=( ${_cli_config_zcompdump}(#qN.mh-24) )'
+  echo 'if (( $#_cli_config_zcompdump_fresh )); then'
+  echo '  compinit -C -d ${_cli_config_zcompdump}'
+  echo 'else'
+  echo '  compinit -d ${_cli_config_zcompdump}'
   echo '  # compinit only rewrites the dump when completions actually changed, so its'
   echo '  # mtime can stay stale forever - touch it so the 24h check resets and the'
   echo '  # next start takes the fast -C path.'
   echo '  touch ${_cli_config_zcompdump}'
-  echo 'else'
-  echo '  compinit -C'
   echo 'fi'
-  echo 'unset _cli_config_zcompdump'
-  echo 'unsetopt extendedglob'
+  echo '(( _cli_config_eg )) && unsetopt extendedglob'
+  echo 'unset _cli_config_zcompdump _cli_config_zcompdump_fresh _cli_config_eg'
 } >>$CLI_CONFIG_PROGRAMS_CONF
 
 # plugin manager must be sourced first so lazyload is available to other confs
