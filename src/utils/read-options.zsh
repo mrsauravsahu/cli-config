@@ -1,5 +1,4 @@
 read_options() {
-  . $CLI_CONFIG_ROOT/src/utils/tool-guards.zsh
 
   # DEFAULT OPTIONS
   CCOPT_PROFILE=default
@@ -55,7 +54,6 @@ read_options() {
         exit
       fi
 
-      validate_tools "${CCOPT_TOOLS[@]}"
       shift
       shift
       ;;
