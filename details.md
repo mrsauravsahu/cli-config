@@ -74,9 +74,9 @@ $ git checkout main
 You might not need all the things that cli-config installs. To see the list of tools available pass the `--help` switch.
 You can pass the list of tools to install with the `-t` or `--tools` switch, like so
 ```bash
-$ ./cli-config install --tools antigen,nvm,ohmyposh
+$ ./cli-config install --tools zimfw,asdf,ohmyposh
 ```
 
 3. Run the setup again
 
-After thinking about it, I've decided that cli-config should retain the older installation even if you run `./cli-config` multiple times. So, incase you want to reinstall any tool, you can delete that folder or the entire `current` folder before running setup again. (Example: If you want to reinstall nvm, delete the `current/nvm` folder and run `cli-config` again)
+After thinking about it, I've decided that cli-config should retain the older installation even if you run `./cli-config` multiple times. So, incase you want to reinstall any tool, you can delete that folder or the entire `current` folder before running setup again. (Example: If you want to reinstall asdf, delete the `current/asdf` folder and run `cli-config` again)

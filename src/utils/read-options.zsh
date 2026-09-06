@@ -1,11 +1,10 @@
 read_options() {
-  . $CLI_CONFIG_ROOT/src/utils/tool-guards.zsh
 
   # DEFAULT OPTIONS
   CCOPT_PROFILE=default
   CCOPT_NO_SUDO='sudo'
   CCOPT_DEBIAN_FRONTEND=''
-  CCOPT_TOOLS=('zimfw' 'ohmyposh' 'asdf' 'dotnet')
+  CCOPT_TOOLS=('zimfw' 'ohmyposh' 'asdf')
 
   # READ OPTIONS
   # Todo: Move to separate file
@@ -55,7 +54,6 @@ read_options() {
         exit
       fi
 
-      validate_tools "${CCOPT_TOOLS[@]}"
       shift
       shift
       ;;
