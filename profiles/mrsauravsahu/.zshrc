@@ -44,11 +44,11 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 . $CLI_CONFIG_PROGRAMS_CONF
 
 # add dotfiles script to the path
-MRSS="${HOME}/GenAI-Workspace/repos/mrsauravsahu/dotfiles"
+MRSS="${HOME}/GenAI-Workspace/repos/dotfiles"
 if [ -d "${MRSS}" ]; then
   PATH_PREFIX="${PATH_PREFIX}:${MRSS}/scripts"
-  . ${HOME}/.mrsauravsahu/dotfiles/${currentOs}.zshrc 2> /dev/null || true
-  . ${HOME}/.mrsauravsahu/dotfiles/secret.${currentOs}.zshrc 2> /dev/null || true
+  . ${MRSS}/${currentOs}.zshrc 2> /dev/null || true
+  . ${MRSS}/secret.${currentOs}.zshrc 2> /dev/null || true
 fi
 
 SAVEHIST=100000  # Save most-recent 100000 lines
@@ -63,7 +63,7 @@ alias k=kubectl
 alias ripgrep=rg
 
 # macOS-only entries (colima, homebrew ruby@3.2, ~/.dotnet/tools) live in
-# ~/.mrsauravsahu/dotfiles/darwin.zshrc - this file is the cross-platform base.
+# ~/GenAI-Workspace/repos/dotfiles/darwin.zshrc - this file is the cross-platform base.
 PATH_PREFIX="${PATH_PREFIX}:${CLI_CONFIG_ROOT}/current/path"
 PATH_PREFIX="${CLI_CONFIG_ROOT}/current/asdf/shims:${PATH_PREFIX}"
 
