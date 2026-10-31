@@ -44,9 +44,9 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 . $CLI_CONFIG_PROGRAMS_CONF
 
 # add dotfiles script to the path
-if [ -d "${HOME}/.mrsauravsahu/dotfiles/" ]; then
-  PATH_PREFIX="${PATH_PREFIX}:${HOME}/.mrsauravsahu/dotfiles/scripts"
-  PATH_PREFIX="${PATH_PREFIX}:${HOME}/.mrsauravsahu/bin"
+MRSS="${HOME}/GenAI-Workspace/repos/mrsauravsahu/dotfiles"
+if [ -d "${MRSS}" ]; then
+  PATH_PREFIX="${PATH_PREFIX}:${MRSS}/scripts"
   . ${HOME}/.mrsauravsahu/dotfiles/${currentOs}.zshrc 2> /dev/null || true
   . ${HOME}/.mrsauravsahu/dotfiles/secret.${currentOs}.zshrc 2> /dev/null || true
 fi

@@ -32,3 +32,6 @@ tmp
 *.envrc
 !template.envrc
 
+# worktrees
+w
+
